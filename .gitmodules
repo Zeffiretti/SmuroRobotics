@@ -1,0 +1,3 @@
+[submodule "modules/ModernRobotics"]
+	path = modules/ModernRobotics
+	url = https://github.com/ratbotlab/ModernRobotics.git
