@@ -173,11 +173,12 @@ GList = cat(3, G1, G2, G3, G4, G5, G6, G7);
 % key var 06
 g = [0; 0; -9.8];
 
-M_B = [[1;0;0;0],[0;0;1;0],[0;-1;0;0],[-0.142547;-0.0433114;0;1]];
+% unused actually
+% M_B = [[1;0;0;0],[0;0;1;0],[0;-1;0;0],[-0.142547;-0.0433114;0;1]];
 
 %% Parameters Brief
 disp('################Smuro Parameters Brief################')
-disp(' Screw axes Si of the joints in a space frame SList: ')
+disp(' Screw axes Si of the joints in a space frame SList: ') 
 disp(SList)
 disp('-----------------------------------------------------')
 disp(' The home configuration of the end-effector M: ')
