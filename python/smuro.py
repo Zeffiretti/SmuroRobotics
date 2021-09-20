@@ -10,6 +10,23 @@ import modern_robotics as mr
 import numpy as np
 
 
+def eul2rotm(theta):
+    R_x = np.array([[1, 0, 0],
+                    [0, math.cos(theta[0]), -math.sin(theta[0])],
+                    [0, math.sin(theta[0]), math.cos(theta[0])]
+                    ])
+    R_y = np.array([[math.cos(theta[1]), 0, math.sin(theta[1])],
+                    [0, 1, 0],
+                    [-math.sin(theta[1]), 0, math.cos(theta[1])]
+                    ])
+    R_z = np.array([[math.cos(theta[2]), -math.sin(theta[2]), 0],
+                    [math.sin(theta[2]), math.cos(theta[2]), 0],
+                    [0, 0, 1]
+                    ])
+    R = np.dot(R_z, np.dot(R_y, R_x))
+    return R
+
+
 class Smuro(object):
     def __init__(self, mass_scale_=1, inertia_scale_=1):
         # key constance
@@ -83,7 +100,7 @@ class Smuro(object):
 
         Tijs = np.ones((self.smuro_dof + 1, 4, 4), dtype=np.float32)
         for i in range(self.smuro_dof + 1):
-            rotm = self.eul2rotm(rpy[i])
+            rotm = eul2rotm(rpy[i])
             Tijs[i] = np.r_[np.c_[rotm, qtrans[i]], [[0, 0, 0, 1]]]
         M01 = np.dot(Tijs[0], Mis[0])
         MList = np.ones((self.smuro_dof + 1, 4, 4), dtype=np.float32)
@@ -129,20 +146,3 @@ class Smuro(object):
         print("05. Gravity vector g:")
         print(self.g)
         print("################### Smuro Robotics Parameters End. ####################")
-
-
-    def eul2rotm(self, theta):
-        R_x = np.array([[1, 0, 0],
-                        [0, math.cos(theta[0]), -math.sin(theta[0])],
-                        [0, math.sin(theta[0]), math.cos(theta[0])]
-                        ])
-        R_y = np.array([[math.cos(theta[1]), 0, math.sin(theta[1])],
-                        [0, 1, 0],
-                        [-math.sin(theta[1]), 0, math.cos(theta[1])]
-                        ])
-        R_z = np.array([[math.cos(theta[2]), -math.sin(theta[2]), 0],
-                        [math.sin(theta[2]), math.cos(theta[2]), 0],
-                        [0, 0, 1]
-                        ])
-        R = np.dot(R_z, np.dot(R_y, R_x))
-        return R
