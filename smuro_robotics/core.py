@@ -131,10 +131,52 @@ class Smuro(object):
         # theta = np.zeros(self.smuro_dof, dtype=np.float32)
 
     def fkinSpace(self, thetalist):
+        """
+        Function: Compute end effector frame (used for current spatial position calculation)
+        Inputs: A list of joint coordinates.
+        Returns: Transfomation matrix representing the end-effector frame when the joints are
+        		at the specified coordinates
+        Notes: FK means Forward Kinematics
+        """
         return mr.FKinSpace(self.M, self.Slist, thetalist)
 
     def ikinSpace(self, T, thetalist, emog=1e-6, ev=1e-6):
+        """
+        Function: Computes inverse kinematics in the space frame for an open chain robot
+        Inputs:
+        	T: The desired end-effector configuration Tsd
+        	thetalist[in][out]: An initial guess and result output of joint angles that are close to
+                 satisfying Tsd
+        	emog: A small positive tolerance on the end-effector orientation
+                error. The returned joint angles must give an end-effector
+                orientation error less than eomg
+        	ev: A small positive tolerance on the end-effector linear position
+              error. The returned joint angles must give an end-effector
+              position error less than ev
+        Outputs:
+        	success: A logical value where TRUE means that the function found
+                   a solution and FALSE means that it ran through the set
+                   number of maximum iterations without finding a solution
+                   within the tolerances eomg and ev.
+        	thetalist[in][out]: Joint angles that achieve T within the specified tolerances,
+        """
         return mr.IKinSpace(self.SList, self.M, T, thetalist, emog, ev)
+
+    def inverseDynamics(self, thetalist, dthetalist, ddthetalist, ftip):
+        """
+        Function: This function uses forward-backward Newton-Euler iterations to solve the
+        equation:
+            taulist = Mlist(thetalist) * ddthetalist + c(thetalist, dthetalist) ...
+                    + g(thetalist) + Jtr(thetalist) * Ftip
+        Inputs:
+            thetalist: n-vector of joint variables
+            dthetalist: n-vector of joint rates
+            ddthetalist: n-vector of joint accelerations
+        Ftip: Spatial force applied by the end-effector expressed in frame {n+1}
+        Outputs:
+            taulist: The n-vector of required joint forces/torques
+        """
+        return mr.InverseDynamics(thetalist, dthetalist, ddthetalist, self.g, ftip, self.MList, self.GList, self.SList)
 
     def printInfo(self):
         print("################### Smuro Robotics Parameters Brief ###################")
