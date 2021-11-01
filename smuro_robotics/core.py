@@ -106,12 +106,14 @@ class Smuro(object):
         MList = np.ones((self.smuro_dof + 1, 4, 4), dtype=np.float32)
         MList[0] = M01
         for i in range(self.smuro_dof):
-            MList[i + 1] = np.dot(np.linalg.inv(Mis[i]), np.dot(Tijs[i + 1], Mis[i + 1]))
+            MList[i + 1] = np.dot(np.linalg.inv(Mis[i]),
+                                  np.dot(Tijs[i + 1], Mis[i + 1]))
             # MList[i + 1] = np.linalg.inv(Mis[i]) * Tijs[i + 1] * Mis[i + 1]
         self.MList = MList
         mass_scale = mass_scale_
         inertia_scale = inertia_scale_
-        mass = mass_scale * np.array([0.0086, 0.002, 0.14, 0.002, 0.0417, 0.0092, 0.0078])
+        mass = mass_scale * \
+            np.array([0.0086, 0.002, 0.14, 0.002, 0.0417, 0.0092, 0.0078])
         inertia = inertia_scale * np.array([[3e-6, 3e-6, 2e-6],
                                             [1.5e-7, 4e-7, 1.8e-7],
                                             [5e-5, 5e-5, 4e-5],
@@ -127,6 +129,12 @@ class Smuro(object):
 
         # inverse dynamics test
         # theta = np.zeros(self.smuro_dof, dtype=np.float32)
+
+    def fkinSpace(self, thetalist):
+        return mr.FKinSpace(self.M, self.Slist, thetalist)
+
+    def ikinSpace(self, T, thetalist, emog=1e-6, ev=1e-6):
+        return mr.IKinSpace(self.SList, self.M, T, thetalist, emog, ev)
 
     def printInfo(self):
         print("################### Smuro Robotics Parameters Brief ###################")
