@@ -5,7 +5,7 @@
 # %%%                zeffiretti@bit.edu.cn, hiesh@mail.com                %%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-from smuro import Smuro
+from .core import Smuro
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
