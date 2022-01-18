@@ -4,7 +4,7 @@
 %%%                   Beijing Institute of Technology                   %%%
 %%%                zeffiretti@bit.edu.cn, hiesh@mail.com                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% what you may concern, namely, key varibles are as following
+%% what you may concern, namely, key variables are as following
 %       SList: Screw axes Si of the joints in a space frame, in the format
 %              of a matrix with the screw axes as the columns.
 %       M:     The home configuration of the end-effector, or the head link
